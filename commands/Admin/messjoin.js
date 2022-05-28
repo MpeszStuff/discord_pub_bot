@@ -17,5 +17,7 @@ module.exports = {
         console.log(m);
       });
     });
+
+    return "Felhasználók logolva";
   },
 };

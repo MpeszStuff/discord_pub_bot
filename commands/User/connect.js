@@ -12,13 +12,12 @@ module.exports = {
   category: "User",
   description: "Paladins fiók összekapcsolása Discord fiókkal",
 
-  slash: true,
+  slash: "both",
 
   minArgs: 2,
   expectedArgs: "<paladins_name> <platform>",
   expectedArgsTypes: ["STRING", "STRING"],
 
-  guildOnly: true,
   testOnly: true,
 
   options: [
@@ -40,9 +39,11 @@ module.exports = {
     },
   ],
 
-  callback: async ({ interaction, member, args }) => {
-    if (interaction.channelId !== process.env.COMMANDSCHANNEL)
-      return `Kérlek a kijelölt szobát használd! <#${process.env.COMMANDSCHANNEL}>`;
+  callback: async ({ message, interaction, member, args }) => {
+    if (interaction) {
+      if (interaction.channelId !== process.env.COMMANDSCHANNEL)
+        return `Kérlek a kijelölt szobát használd! <#${process.env.COMMANDSCHANNEL}>`;
+    }
     const username = args.shift() || "unknownplayername";
     const platform = args.shift().toLocaleLowerCase() || "pc";
 
@@ -53,7 +54,12 @@ module.exports = {
     }
     // Check if user exist and if so it's already has an account connected
     // if true: throw an error to the user
-    const filter = { _id: interaction.user.id };
+    let filter = {};
+    if (interaction) {
+      filter = { _id: interaction.user.id };
+    } else {
+      filter = { _id: message.author.id };
+    }
     let profile = await userSchema.findOne(filter);
     if (!profile) return "**Hiba**: Nem találunk a PUB szerver adatbázisában!";
     if (profile.paladinsId !== null)
@@ -109,7 +115,9 @@ module.exports = {
           (role) => role.name === "Verified"
         );
 
-        member.setNickname(username);
+        if (member.user.id !== "282548643142172672") {
+          member.setNickname(username);
+        }
         member.roles.add(role);
         return `**Sikeres kapcsolatteremtés!** Paladins fiókod: ${profile.userName} (${profile.paladinsId})`;
       } catch (error) {

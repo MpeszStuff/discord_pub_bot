@@ -23,7 +23,7 @@ client.on("ready", () => {
     commandDir: path.join(__dirname, "commands"),
     featureDir: path.join(__dirname, "features"),
     botOwners: ["282548643142172672"],
-    testServers: ["743137538604138526"],
+    testServers: ["870593485114318898"],
     mongoUri: process.env.MONGO_URI,
   });
 });

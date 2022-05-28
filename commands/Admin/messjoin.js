@@ -12,7 +12,9 @@ module.exports = {
   ownerOnly: true,
 
   callback: async ({ guild }) => {
+    console.log("Felhasználók:");
     guild.members.fetch().then((members) => {
+      console.log(members);
       members.forEach((m) => {
         console.log(m);
       });

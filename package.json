@@ -1,0 +1,33 @@
+{
+  "name": "discord_pub_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MpeszStuff/discord_pub_bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MpeszStuff/discord_pub_bot/issues"
+  },
+  "homepage": "https://github.com/MpeszStuff/discord_pub_bot#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "discord.js": "^13.7.0",
+    "dotenv": "^16.0.1",
+    "https": "^1.0.0",
+    "moment": "^2.29.3",
+    "mongoose": "^6.3.4",
+    "wokcommands": "^1.5.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

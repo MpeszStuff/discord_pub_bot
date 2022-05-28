@@ -1,0 +1,122 @@
+const DJS = require("discord.js");
+const userSchema = require("../../models/user-schema");
+
+const {
+  getPlayerIdByName,
+  getPlayerIdsByGamertag,
+} = require("../../tools/paladins-api");
+
+const platforms = ["pc", "ps4", "xbox", "switch"];
+
+module.exports = {
+  category: "User",
+  description: "Paladins fiók összekapcsolása Discord fiókkal",
+
+  slash: true,
+
+  minArgs: 2,
+  expectedArgs: "<paladins_name> <platform>",
+  expectedArgsTypes: ["STRING", "STRING"],
+
+  guildOnly: true,
+  testOnly: true,
+
+  options: [
+    {
+      name: "paladins_name",
+      description: "Érvényes Paladins felhasználóneved",
+      required: true,
+      type: "STRING",
+    },
+    {
+      name: "platform",
+      description: "Válassz platformot!",
+      required: true,
+      type: "STRING",
+      choices: platforms.map((platform) => ({
+        name: platform,
+        value: platform.toUpperCase(),
+      })),
+    },
+  ],
+
+  callback: async ({ interaction, member, args }) => {
+    if (interaction.channelId !== process.env.COMMANDSCHANNEL)
+      return `Kérlek a kijelölt szobát használd! <#${process.env.COMMANDSCHANNEL}>`;
+    const username = args.shift() || "unknownplayername";
+    const platform = args.shift().toLocaleLowerCase() || "pc";
+
+    if (!platforms.includes(platform.toLocaleLowerCase())) {
+      return `Ismeretlen platform. Ezek közül lehet választani: "${platforms.join(
+        '",'
+      )}"`;
+    }
+    // Check if user exist and if so it's already has an account connected
+    // if true: throw an error to the user
+    const filter = { _id: interaction.user.id };
+    let profile = await userSchema.findOne(filter);
+    if (!profile) return "**Hiba**: Nem találunk a PUB szerver adatbázisában!";
+    if (profile.paladinsId !== null)
+      return `**Hiba**: Már szerepel egy feljegyzés ehhez a discord fiókhoz. Ha frissíteni szeretnéd a neved, kérlek, használd a "/update" parancsot!`;
+
+    // Check user's platform
+    // User's selected platform is PC
+
+    // Check if username exist
+    // if false: throw an error to the user
+    let playerId;
+    if (platform === "pc") {
+      playerId = await getPlayerIdByName(username);
+    } else {
+      // User's selected platform is not PC
+      let platformIndex = "";
+      switch (platform) {
+        case "xbox":
+          platformIndex = "10";
+          break;
+        case "switch":
+          platformIndex = "22";
+          break;
+        case "ps4":
+          platformIndex = "9";
+          break;
+      }
+      playerId = await getPlayerIdsByGamertag(username, platformIndex);
+    }
+
+    if (playerId === 0)
+      return `**Hiba**: Felhasználónév (${username}) nem található!`;
+
+    // Check if username has been claimed already
+    // if true: throw an error to the user
+    const update = {
+      paladinsId: playerId,
+      userName: username,
+    };
+
+    const paladinsIdFilter = {
+      paladinsId: playerId,
+    };
+
+    profile = await userSchema.findOne(paladinsIdFilter);
+
+    if (!profile) {
+      try {
+        profile = await userSchema.findOneAndUpdate(filter, update);
+        profile = await userSchema.findOne(filter);
+
+        const role = member.guild.roles.cache.find(
+          (role) => role.name === "Verified"
+        );
+
+        member.setNickname(username);
+        member.roles.add(role);
+        return `**Sikeres kapcsolatteremtés!** Paladins fiókod: ${profile.userName} (${profile.paladinsId})`;
+      } catch (error) {
+        return "**Hiba** ❌: Nincs jogom módosításokat végezni rajtad.";
+      }
+    } else {
+      return `**Hiba**: Ez a paladins profilt már valaki használja a szerveren (${username})!`;
+    }
+  },
+};

@@ -11,7 +11,7 @@ module.exports = {
 
   ownerOnly: true,
 
-  callback: async ({ member, guild }) => {
+  callback: async ({ guild }) => {
     guild.members.fetch().then((members) => {
       members.forEach((m) => {
         console.log(m);

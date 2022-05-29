@@ -121,7 +121,7 @@ module.exports = {
         }
         await member.roles.add(role);
 
-        return `**Sikeres kapcsolatteremtés!** ✅ Paladins fiókod: ${profile.userName} (${profile.paladinsId})`;
+        return `**Sikeres kapcsolatteremtés!** ✅ Paladins fiókod: ${profile.userName} (${profile.paladinsId})\nA <#870593485114318901> szobában tudsz magadra különböző rangokat kérni, illetve a szabályzatunkat is ott tudod elfogadni.`;
       } catch (error) {
         return "**Hiba** ❌: Nincs jogom módosításokat végezni rajtad.";
       }

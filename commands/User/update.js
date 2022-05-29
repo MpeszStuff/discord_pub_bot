@@ -3,8 +3,8 @@ const userSchema = require("../../models/user-schema");
 const { getPlayer } = require("../../tools/paladins-api");
 
 module.exports = {
-  category: "Moderation",
-  description: "Privát üzenet küldése",
+  category: "User",
+  description: "Felhasználói kapcsolat frissítése",
 
   slash: false,
   testOnly: true,

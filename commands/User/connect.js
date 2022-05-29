@@ -117,7 +117,7 @@ module.exports = {
         );
 
         if (member.user.id !== "282548643142172672") {
-          await member.setNickname(username);
+          await member.setNickname(profile.userName);
         }
         await member.roles.add(role);
 

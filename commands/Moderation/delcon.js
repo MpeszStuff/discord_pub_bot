@@ -59,8 +59,9 @@ module.exports = {
         content: `**Hiba** ❌: "Verified" rang nem található.`,
         ephemeral: true,
       };
-    if (member_role) member?.roles.remove(member_role);
-    member?.roles.remove(verified_role);
+    if (member.roles.cache.some((r) => r.name === "Member"))
+      member.roles.remove(member_role);
+    member.roles.remove(verified_role);
 
     try {
       // Message for the targeted user

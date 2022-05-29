@@ -42,13 +42,13 @@ module.exports = {
   callback: async ({ message, interaction, member, args }) => {
     if (interaction) {
       if (interaction.channelId !== process.env.COMMANDSCHANNEL)
-        return `Kérlek a kijelölt szobát használd! <#${process.env.COMMANDSCHANNEL}>`;
+        return `❌ Kérlek a kijelölt szobát használd! <#${process.env.COMMANDSCHANNEL}>`;
     }
     const username = args.shift() || "unknownplayername";
     const platform = args.shift().toLocaleLowerCase() || "pc";
 
     if (!platforms.includes(platform.toLocaleLowerCase())) {
-      return `Ismeretlen platform. Ezek közül lehet választani: "${platforms.join(
+      return `❌ Ismeretlen platform. Ezek közül lehet választani: "${platforms.join(
         '",'
       )}"`;
     }
@@ -61,9 +61,10 @@ module.exports = {
       filter = { _id: message.author.id };
     }
     let profile = await userSchema.findOne(filter);
-    if (!profile) return "**Hiba**: Nem találunk a PUB szerver adatbázisában!";
+    if (!profile)
+      return "**Hiba** ❌: Nem találunk a PUB szerver adatbázisában!";
     if (profile.paladinsId !== null)
-      return `**Hiba**: Már szerepel egy feljegyzés ehhez a discord fiókhoz. Ha frissíteni szeretnéd a neved, kérlek, használd a "/update" parancsot!`;
+      return `**Hiba** ❌: Már szerepel egy feljegyzés ehhez a discord fiókhoz. Ha frissíteni szeretnéd a neved, kérlek, használd a "/update" parancsot!`;
 
     // Check user's platform
     // User's selected platform is PC
@@ -91,7 +92,7 @@ module.exports = {
     }
 
     if (playerId === 0)
-      return `**Hiba**: Felhasználónév (${username}) nem található!`;
+      return `**Hiba** ❌: Felhasználónév (${username}) nem található!`;
 
     // Check if username has been claimed already
     // if true: throw an error to the user
@@ -116,15 +117,16 @@ module.exports = {
         );
 
         if (member.user.id !== "282548643142172672") {
-          member.setNickname(username);
+          await member.setNickname(username);
         }
-        member.roles.add(role);
-        return `**Sikeres kapcsolatteremtés!** Paladins fiókod: ${profile.userName} (${profile.paladinsId})`;
+        await member.roles.add(role);
+
+        return `**Sikeres kapcsolatteremtés!** ✅ Paladins fiókod: ${profile.userName} (${profile.paladinsId})`;
       } catch (error) {
         return "**Hiba** ❌: Nincs jogom módosításokat végezni rajtad.";
       }
     } else {
-      return `**Hiba**: Ez a paladins profilt már valaki használja a szerveren (${username})!`;
+      return `**Hiba** ❌: Ez a paladins profilt már valaki használja a szerveren (${username})!`;
     }
   },
 };

@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const userSchema = require("../../models/user-schema");
+const { getPlayer } = require("../../tools/paladins-api");
 
 module.exports = {
   category: "Moderation",

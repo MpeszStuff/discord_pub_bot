@@ -7,7 +7,6 @@ module.exports = {
   permissions: ["ADMINISTRATOR"],
 
   slash: "both",
-  testOnly: true,
 
   maxArgs: 1,
   expectedArgs: "<class>",

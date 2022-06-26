@@ -9,6 +9,19 @@ module.exports = {
   slash: "both",
   testOnly: true,
 
+  maxArgs: 1,
+  expectedArgs: "<class>",
+  expectedArgsTypes: ["STRING"],
+
+  options: [
+    {
+      name: "class",
+      description: "Champion osztályra szűrés: dmg // flank // tank // support",
+      required: false,
+      type: "STRING",
+    },
+  ],
+
   callback: async ({ args, channel }) => {
     const option = args.shift().toLowerCase();
     const champions = require("../../tools/champions.json");

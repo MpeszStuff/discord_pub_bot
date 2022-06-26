@@ -4,9 +4,8 @@ module.exports = {
   category: "Utility",
   description: "Véletlenszerű Champion",
 
-  permissions: ["ADMINISTRATOR"],
-
   slash: "both",
+  testOnly: true,
 
   maxArgs: 1,
   expectedArgs: "<class>",

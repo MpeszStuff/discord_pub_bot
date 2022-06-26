@@ -23,7 +23,10 @@ module.exports = {
   ],
 
   callback: async ({ args, channel }) => {
-    const option = args.shift().toLowerCase();
+    var option = "null";
+    if (args[0]) {
+      option = args.shift().toLowerCase();
+    }
     const champions = require("../../tools/champions.json");
     var selected = "null";
 

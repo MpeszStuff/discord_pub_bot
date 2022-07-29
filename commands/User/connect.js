@@ -46,11 +46,13 @@ module.exports = {
     let username = "";
     let platform = "";
     if (message.content.includes('"')) {
-      let msg = message.content
-      let name = msg.substr(msg.indexOf('"'), msg.lastIndexOf('"')+1)
-      name = name.replace('"', '')
-      platform = msg.replace(/\s/g, '')
-      console.log(name)
+      let msg = msg.substr(message.content.indexOf('"'), message.content.lastIndexOf('"')+1)
+      msg = msg.replace(/"/g, '')
+
+      username = msg.split('')[0]
+      platform = msg.split('')[1]
+      
+      console.log(username)
       console.log(platform)
     } else {
       username = args.shift() || "unknownplayername";

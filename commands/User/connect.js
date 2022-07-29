@@ -18,8 +18,6 @@ module.exports = {
   expectedArgs: "<paladins_name> <platform>",
   expectedArgsTypes: ["STRING", "STRING"],
 
-  testOnly: true,
-
   options: [
     {
       name: "paladins_name",

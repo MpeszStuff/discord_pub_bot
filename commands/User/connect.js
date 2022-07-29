@@ -45,7 +45,7 @@ module.exports = {
 
     let username = "";
     let platform = "";
-    if (message.startsWith('"')) {
+    if (message.content.includes('"')) {
       let msg = message
       let name = msg.substr(msg.indexOf('"'), msg.lastIndexOf('"')+1)
       name = name.replace('"', '')
@@ -58,8 +58,8 @@ module.exports = {
     }
 
     if (!platforms.includes(platform.toLocaleLowerCase())) {
-      return `❌ Ismeretlen platform. Ezek közül lehet választani: "${platforms.join(
-        '",'
+      return `❌ Ismeretlen platform. Ezek közül lehet választani: ${platforms.join(
+        ', '
       )}"`;
     }
     // Check if user exist and if so it's already has an account connected

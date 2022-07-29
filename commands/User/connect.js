@@ -46,7 +46,7 @@ module.exports = {
     let username = "";
     let platform = "";
     if (message.content.includes('"')) {
-      let msg = message
+      let msg = message.content
       let name = msg.substr(msg.indexOf('"'), msg.lastIndexOf('"')+1)
       name = name.replace('"', '')
       platform = msg.replace(/\s/g, '')

@@ -42,8 +42,20 @@ module.exports = {
       if (interaction.channelId !== process.env.COMMANDSCHANNEL)
         return `❌ Kérlek a kijelölt szobát használd! <#${process.env.COMMANDSCHANNEL}>`;
     }
-    const username = args.shift() || "unknownplayername";
-    const platform = args.shift().toLocaleLowerCase() || "pc";
+
+    let username = "";
+    let platform = "";
+    if (message.content.startsWith('"')) {
+      let msg = message.content
+      let name = msg.substr(msg.indexOf('"'), msg.lastIndexOf('"')+1)
+      name = name.replace('"', '')
+      platform = msg.replace(/\s/g, '')
+      console.log(name)
+      console.log(platform)
+    } else {
+      username = args.shift() || "unknownplayername";
+      platform = args.shift().toLocaleLowerCase() || "pc";
+    }
 
     if (!platforms.includes(platform.toLocaleLowerCase())) {
       return `❌ Ismeretlen platform. Ezek közül lehet választani: "${platforms.join(

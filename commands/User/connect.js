@@ -50,7 +50,7 @@ module.exports = {
       username = msg.replace(/"/g, '')
 
       platform = message.content.replace(/"/g,'')
-      platform = (platform.replace(username, '')).split(' ')[1]
+      platform = ((platform.replace(username, '')).replace(/\s/g, '')).replace('?connect', '')
       
       console.log(username)
       console.log(platform)

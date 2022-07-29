@@ -46,11 +46,11 @@ module.exports = {
     let username = "";
     let platform = "";
     if (message.content.includes('"')) {
-      let msg = msg.substr(message.content.indexOf('"'), message.content.lastIndexOf('"')+1)
-      msg = msg.replace(/"/g, '')
+      let msg = message.content.substring(message.content.indexOf('"'), message.content.lastIndexOf('"')+1)
+      username = msg.replace(/"/g, '')
 
-      username = msg.split('')[0]
-      platform = msg.split('')[1]
+      platform = message.content.replace(/"/g,'')
+      platform = (platform.replace(username, '')).replace(/\s/g, '')
       
       console.log(username)
       console.log(platform)
